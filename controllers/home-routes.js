@@ -6,6 +6,7 @@ const { Post, User, Comment } = require('../models');
 // We're using a template engine that lets us dictate which template we'd like to use
 // which in this case is the homepage handlebars template.
 router.get('/', (req, res) => {
+    console.log(req.session);
     Post.findAll({
       attributes: [
         'id',
@@ -41,6 +42,14 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
       });
   });
+
+  router.get('/login', (req, res) => {
+    if (req.session.loggedIn) {
+      res.redirect('/');
+      return;
+    }
   
+    res.render('login');
+  });
 
 module.exports = router;
